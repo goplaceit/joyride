@@ -34,7 +34,8 @@
       'allowClose'           : true,      // true or false - true shows the close button and responds to esc key
       'modalTips'            : false,     // true or false - true shows a modal that highlights current tip and target element
       'modalTipsOptions' : {
-        'targetZIndex'       : 101        // the css z-index property set on the current target
+        'targetZIndex'       : 101,       // the css z-index property set on the current target
+        'progressive'        : false      // true or false - true avoids previous targets for getting back theirs original z-index
       },
       'template' : { // HTML segments for tip layout
         'link'    : '<a class="joyride-close-tip joyride-clickable">&times;</a>',
@@ -355,6 +356,18 @@
       },
 
       hide : function () {
+        var joyrideData = settings.$target.data("joyride");
+
+        if (settings.modalTips && !settings.modalTipsOptions.progressive) {
+          if (joyrideData.previousZIndex) {
+            settings.$target.css({zIndex:joyrideData.previousZIndex});
+          }
+
+          if (joyrideData.previousPosition) {
+            settings.$target.css({position:joyrideData.previousPosition});
+          }
+        }
+
         settings.postStepCallback(settings.$li.index(), settings.$current_tip);
         $('.joyride-modal-bg').hide();
         settings.$current_tip.hide();
