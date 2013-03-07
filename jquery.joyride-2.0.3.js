@@ -31,6 +31,7 @@
       'tipContainer'         : 'body',    // Where will the tip be attached
       'postRideCallback'     : $.noop,    // A method to call once the tour closes (canceled or complete)
       'postStepCallback'     : $.noop,    // A method to call after each step
+      'allowClose'           : true,      // true or false - true shows the close button and responds to esc key
       'template' : { // HTML segments for tip layout
         'link'    : '<a class="joyride-close-tip joyride-clickable">&times;</a>',
         'timer'   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
@@ -161,7 +162,7 @@
         $blank = $(settings.template.tip).addClass(opts.tip_class);
         content = $.trim($(opts.li).html()) +
           methods.button_text(opts.button_text) +
-          settings.template.link +
+          (settings.allowClose ? settings.template.link : "") +
           methods.timer_instance(opts.index);
 
         $wrapper = $(settings.template.wrapper);
@@ -672,7 +673,7 @@
         $(el).on('keydown', function( event ) {
           if (!event.isDefaultPrevented() && event.keyCode &&
               // Escape key.
-              event.keyCode === 27 ) {
+              event.keyCode === 27 && settings.allowClose) {
             event.preventDefault();
             methods.end();
             return;
