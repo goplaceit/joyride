@@ -32,7 +32,7 @@
       'postRideCallback'     : $.noop,    // A method to call once the tour closes (canceled or complete)
       'postStepCallback'     : $.noop,    // A method to call after each step
       'template' : { // HTML segments for tip layout
-        'link'    : '<a href="#close" class="joyride-close-tip">X</a>',
+        'link'    : '<a class="joyride-close-tip joyride-clickable">&times;</a>',
         'timer'   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
         'tip'     : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
         'wrapper' : '<div class="joyride-content-wrapper" role="dialog"></div>',
@@ -151,7 +151,7 @@
             methods.hide();
             methods.show();
             }
-      }, 
+      },
 
       tip_template : function (opts) {
         var $blank, content, $wrapper;
@@ -390,7 +390,7 @@
         if(!$.isEmptyObject(settings)){
           settings.$document.off('.joyride');
         }
-        
+
         $(window).off('.joyride');
         $('.joyride-close-tip, .joyride-next-tip, .joyride-modal-bg').off('.joyride');
         $('.joyride-tip-guide, .joyride-modal-bg').remove();
