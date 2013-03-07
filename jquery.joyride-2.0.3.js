@@ -32,6 +32,10 @@
       'postRideCallback'     : $.noop,    // A method to call once the tour closes (canceled or complete)
       'postStepCallback'     : $.noop,    // A method to call after each step
       'allowClose'           : true,      // true or false - true shows the close button and responds to esc key
+      'modalTips'            : false,     // true or false - true shows a modal that highlights current tip and target element
+      'modalTipsOptions' : {
+        'targetZIndex'       : 101        // the css z-index property set on the current target
+      },
       'template' : { // HTML segments for tip layout
         'link'    : '<a class="joyride-close-tip joyride-clickable">&times;</a>',
         'timer'   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
@@ -98,7 +102,9 @@
 
             }
 
-            settings.$document.on('click.joyride', '.joyride-next-tip, .joyride-modal-bg', function (e) {
+            var elementsSelector = settings.allowClose ? '.joyride-next-tip, .joyride-modal-bg' : '.joyride-next-tip';
+
+            settings.$document.on('click.joyride', elementsSelector, function (e) {
               e.preventDefault();
 
               if (settings.$li.next().length < 1) {
@@ -316,6 +322,25 @@
 
           settings.paused = true;
 
+        }
+
+        if (settings.modalTips && settings.$target) {
+          if (!$(".joyride-modal-bg").length) {
+            $('<div class="joyride-modal-bg">').appendTo("body").show();
+          } else {
+            $(".joyride-modal-bg").show()
+          }
+
+          settings.$target.data("joyride", {
+            previousZIndex: settings.$target.css("z-index"),
+            previousPosition: settings.$target.css("position")
+          });
+
+          settings.$target.css({zIndex:settings.modalTipsOptions.targetZIndex});
+
+          if (settings.$target.css("position") === "static") {
+            settings.$target.css({position:"relative"});
+          }
         }
 
       },
