@@ -495,7 +495,7 @@
 
               settings.$next_tip.css({
                 top: settings.$target.offset().top,
-                left: (settings.$target.outerWidth() + settings.$target.offset().left)});
+                left: (settings.$target.outerWidth() + settings.$target.offset().left) + nub_height});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'left');
 
