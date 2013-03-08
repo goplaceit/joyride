@@ -344,9 +344,9 @@
           }
         }
 
-        if (settings.$li.data("delegate-focus")) {
+        if (settings.tipSettings.delegateFocus) {
           setTimeout(function() {
-            settings.$target.find(settings.$li.data("delegate-focus")).focus();
+            settings.$target.find(settings.tipSettings.delegateFocus).focus();
           }, 0);
         }
       },
