@@ -740,6 +740,10 @@
             event.preventDefault();
           }
         });
+      },
+
+      currentStep : function() {
+        return settings.$li.index();
       }
 
     };
