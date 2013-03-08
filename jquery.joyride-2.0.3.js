@@ -103,9 +103,25 @@
 
             }
 
-            var elementsSelector = settings.allowClose ? '.joyride-next-tip, .joyride-modal-bg' : '.joyride-next-tip';
+            settings.$document.on('click.joyride', '.joyride-modal-bg', function (e) {
+              e.preventDefault();
 
-            settings.$document.on('click.joyride', elementsSelector, function (e) {
+              if (settings.allowClose || settings.tipSettings.allowClose) {
+                if (settings.$li.next().length < 1) {
+                  methods.end();
+                } else if (settings.timer > 0) {
+                  clearTimeout(settings.automate);
+                  methods.hide();
+                  methods.show();
+                  methods.startTimer();
+                } else {
+                  methods.hide();
+                  methods.show();
+                }
+              }
+            });
+
+            settings.$document.on('click.joyride', '.joyride-next-tip', function (e) {
               e.preventDefault();
 
               if (settings.$li.next().length < 1) {
@@ -162,14 +178,27 @@
       },
 
       tip_template : function (opts) {
-        var $blank, content, $wrapper;
+        var $blank, content, $wrapper, opts_arr, opts_len, ii, p;
+
+        opts_arr = (opts.li.data('options') || ':').split(';');
+        opts_len = opts_arr.length;
+
+        for (ii = opts_len - 1; ii >= 0; ii--) {
+          p = opts_arr[ii].split(':');
+
+          if (p.length === 2) {
+            opts[$.trim(p[0])] = $.trim(p[1]);
+          }
+        }
+
+        var tipSettings = $.extend({}, settings, opts);
 
         opts.tip_class = opts.tip_class || '';
 
         $blank = $(settings.template.tip).addClass(opts.tip_class);
         content = $.trim($(opts.li).html()) +
           (opts.button_text !== "" ? methods.button_text(opts.button_text) : "") +
-          (settings.allowClose ? settings.template.link : "") +
+          (settings.allowClose || tipSettings.allowClose ? settings.template.link : "") +
           methods.timer_instance(opts.index);
 
         $wrapper = $(settings.template.wrapper);
@@ -247,6 +276,14 @@
 
               if (p.length === 2) {
                 opts[$.trim(p[0])] = $.trim(p[1]);
+
+                if (opts[$.trim(p[0])] === "true") {
+                  opts[$.trim(p[0])] = true;
+                }
+
+                if (opts[$.trim(p[0])] === "false") {
+                  opts[$.trim(p[0])] = false;
+                }
               }
             }
 
@@ -719,7 +756,7 @@
         $(el).on('keydown', function( event ) {
           if (!event.isDefaultPrevented() && event.keyCode &&
               // Escape key.
-              event.keyCode === 27 && settings.allowClose) {
+              event.keyCode === 27 && (settings.allowClose || settings.tipSettings.allowClose)) {
             event.preventDefault();
             methods.end();
             return;
