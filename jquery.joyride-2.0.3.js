@@ -476,34 +476,37 @@
 
         if (!/body/i.test(settings.$target.selector)) {
 
+            var offsetTop = parseInt(settings.tipSettings.offsetTop || 0, 10);
+            var offsetLeft = parseInt(settings.tipSettings.offsetLeft || 0, 10);
+
             if (methods.bottom()) {
               settings.$next_tip.css({
-                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight()),
-                left: settings.$target.offset().left});
+                top: (settings.$target.offset().top + nub_height + settings.$target.outerHeight() + offsetTop),
+                left: settings.$target.offset().left + offsetLeft});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'top');
 
             } else if (methods.top()) {
 
               settings.$next_tip.css({
-                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height),
-                left: settings.$target.offset().left});
+                top: (settings.$target.offset().top - settings.$next_tip.outerHeight() - nub_height + offsetTop),
+                left: settings.$target.offset().left + offsetLeft});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'bottom');
 
             } else if (methods.right()) {
 
               settings.$next_tip.css({
-                top: settings.$target.offset().top,
-                left: (settings.$target.outerWidth() + settings.$target.offset().left) + nub_height});
+                top: settings.$target.offset().top + offsetTop,
+                left: (settings.$target.outerWidth() + settings.$target.offset().left) + nub_height + offsetLeft});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'left');
 
             } else if (methods.left()) {
 
               settings.$next_tip.css({
-                top: settings.$target.offset().top,
-                left: (settings.$target.offset().left - settings.$next_tip.outerWidth() - nub_height)});
+                top: settings.$target.offset().top + offsetTop,
+                left: (settings.$target.offset().left - settings.$next_tip.outerWidth() - nub_height + offsetLeft)});
 
               methods.nub_position($nub, settings.tipSettings.nubPosition, 'right');
 
