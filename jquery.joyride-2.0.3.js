@@ -344,6 +344,11 @@
           }
         }
 
+        if (settings.$li.data("delegate-focus")) {
+          setTimeout(function() {
+            settings.$target.find(settings.$li.data("delegate-focus")).focus();
+          }, 0);
+        }
       },
 
       // detect phones with media queries if supported.
