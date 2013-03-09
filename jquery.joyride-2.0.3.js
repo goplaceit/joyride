@@ -719,6 +719,31 @@
         settings.$current_tip.hide();
         settings.postStepCallback(settings.$li.index(), settings.$current_tip);
         settings.postRideCallback(settings.$li.index(), settings.$current_tip);
+
+        settings.$content_el.find("> li").each(function() {
+          var cl = $(this).attr('data-class'),
+              id = $(this).attr('data-id'),
+              $sel = function () {
+                if (id) {
+                  return $(settings.document.getElementById(id));
+                } else if (cl) {
+                  return $('.' + cl).first();
+                } else {
+                  return $('body');
+                }
+              };
+
+          var $target = $sel();
+          var data = $target.data("joyride");
+
+          if (data.previousPosition) {
+            $target.css({position:data.previousPosition});
+          }
+
+          if (data.previousZIndex) {
+            $target.css({zIndex:data.previousZIndex});
+          }
+        });
       },
 
       jquery_check : function () {
