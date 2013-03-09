@@ -736,11 +736,11 @@
           var $target = $sel();
           var data = $target.data("joyride");
 
-          if (data.previousPosition) {
+          if (data && data.previousPosition) {
             $target.css({position:data.previousPosition});
           }
 
-          if (data.previousZIndex) {
+          if (data && data.previousZIndex) {
             $target.css({zIndex:data.previousZIndex});
           }
         });
